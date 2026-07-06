@@ -9,7 +9,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "vue": "^3.5.39"
+    "@mdi/font": "^7.4.47",
+    "@tailwindcss/vite": "^4.3.2",
+    "axios": "^1.18.1",
+    "pinia": "^3.0.4",
+    "tailwindcss": "^4.3.2",
+    "vue": "^3.5.39",
+    "vue-router": "^5.1.0"
   },
   "devDependencies": {
     "@types/node": "^24.13.2",
