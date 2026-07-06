@@ -1,5 +1,11 @@
-import { createApp } from 'vue'
 import './style.css'
+import '@mdi/font/css/materialdesignicons.min.css'
+import { createApp } from 'vue'
+import { router } from './router'
+import { createPinia } from 'pinia'
 import App from './App.vue'
 
-createApp(App).mount('#app')
+createApp(App)
+    .use(router)
+    .use(createPinia())
+    .mount('#app')
