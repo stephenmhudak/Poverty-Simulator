@@ -1,0 +1,132 @@
+[
+    {
+        "title": "Flat tire",
+        "description": [
+            "You hit a pothole on the way to work and got a flat tire.",
+            "You're 2 hours late for your shift.",
+            "You spent $%lostMoney% on a new tire."
+        ],
+        "effects": [
+            {
+                "item": "work",
+                "options": [0.25]
+            },
+            {
+                "item": "bankAccount",
+                "options": [150,200,250]
+            }
+        ]
+    },
+    {
+        "title": "Car breakdown",
+        "description": [
+            "Your car has broken down and you have abandonned it.",
+            "You're 2 hours late for your shift and no longer have a car."
+        ],
+        "effects": [
+            {
+                "item": "work",
+                "options": [0.25]
+            },
+            {
+                "item": "hasCar",
+                "options": [false]
+            }
+        ]
+    },
+    {
+        "title": "Sick Day",
+        "description": [
+            "You got the flu and missed %daysMissed% days of work.",
+            "You spent $%lostMoney% going to the doctor for a doctor's note."
+        ],
+        "effects": [
+            {
+                "item": "work",
+                "options": [1,2,3]
+            },
+            {
+                "item": "bankAccount",
+                "options": [40,65]
+            }
+        ]
+    },
+    {
+        "title": "Power Outage",
+        "description": [
+            "There was a storm and you lost power, causing all of your food to go bad.",
+            "You spent $%lostMoney% restocking your refridgerator."
+        ],
+        "effects": [
+            {
+                "item": "bankAccount",
+                "options": [100,200]
+            }
+        ]
+    },
+    {
+        "title": "Heavy Traffic",
+        "description": [
+            "There was heavy traffic.",
+            "You're 2 hours late for your shift."
+        ],
+        "effects": [
+            {
+                "item": "work",
+                "options": [0.25]
+            }
+        ]
+    },
+    {
+        "title": "Unpaid Phone Bill",
+        "description": [
+            "You didn't pay your phone bill and its service has been disconnected.",
+            "You visit the phone store.",
+            "There was a long line and couldn't easily remember your account details.",
+            "You pay your outstanding balance of $65 and a $25 reconnect fee.",
+            "You miss a day of work."
+        ],
+        "effects": [
+            {
+                "item": "work",
+                "options": [1]
+            },
+            {
+                "item": "bankAccount",
+                "options": [90]
+            }
+        ]
+    },
+    {
+        "title": "Unpaid Water Bill",
+        "description": [
+            "You didn't pay your water bill and its service has been disconnected.",
+            "You visit the utility district.",
+            "You pay your outstanding balance of $40 and a $25 reconnect fee.",
+            "You miss half a day of work."
+        ],
+        "effects": [
+            {
+                "item": "work",
+                "options": [0.5]
+            },
+            {
+                "item": "bankAccount",
+                "options": [65]
+            }
+        ]
+    },
+    {
+        "title": "Wage Decrease",
+        "description": [
+            "You employer decrease everyone's pay rate to prevent bankruptcy.",
+            "Your payrate was drecreased by $%rateDecrease% per day."
+        ],
+        "effects": [
+            {
+                "item": "payRate",
+                "options": [0.25, 10, 15]
+            }
+        ]
+    }
+]
