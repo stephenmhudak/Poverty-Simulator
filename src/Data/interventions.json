@@ -1,0 +1,15 @@
+[
+    {
+        "title": "Community Action: Water Bill",
+        "description": [
+            "A local community action group was able to assist with your water bill.",
+            "You add $%addMoney% to your bank account."
+        ],
+        "effects": [
+            {
+                "item": "bankAccount",
+                "options": [65]
+            }
+        ]
+    }
+]
