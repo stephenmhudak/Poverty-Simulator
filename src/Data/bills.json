@@ -1,0 +1,37 @@
+[
+    {
+        "title": "Rent",
+        "amounts": [750,900],
+        "dueBy": 5
+    },
+    {
+        "title": "Water",
+        "amounts": [40,60,80],
+        "dueBy": 15
+    },
+    {
+        "title": "Electric",
+        "amounts": [90,100,140],
+        "dueBy": 15
+    },
+    {
+        "title": "Phone",
+        "amounts": [50,60],
+        "dueBy": 10
+    },
+    {
+        "title": "Car Insurance",
+        "amounts": [100,120],
+        "dueBy": 10
+    },
+    {
+        "title": "Renter's Insurance",
+        "amounts": [20,50],
+        "dueBy": 10
+    },
+    {
+        "title": "Food",
+        "amounts": [200],
+        "dueBy": 10
+    }
+]
