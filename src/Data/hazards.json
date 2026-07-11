@@ -1,6 +1,6 @@
 [
     {
-        "title": "Flat tire",
+        "title": "Flat Tire",
         "description": [
             "You hit a pothole on the way to work and got a flat tire.",
             "You're 2 hours late for your shift.",
@@ -18,7 +18,7 @@
         ]
     },
     {
-        "title": "Car breakdown",
+        "title": "Car Breakdown",
         "description": [
             "Your car has broken down and you have abandonned it.",
             "You're 2 hours late for your shift and no longer have a car."
@@ -74,45 +74,6 @@
             {
                 "item": "work",
                 "options": [0.25]
-            }
-        ]
-    },
-    {
-        "title": "Unpaid Phone Bill",
-        "description": [
-            "You didn't pay your phone bill and its service has been disconnected.",
-            "You visit the phone store.",
-            "There was a long line and couldn't easily remember your account details.",
-            "You pay your outstanding balance of $65 and a $25 reconnect fee.",
-            "You miss a day of work."
-        ],
-        "effects": [
-            {
-                "item": "work",
-                "options": [1]
-            },
-            {
-                "item": "bankAccount",
-                "options": [90]
-            }
-        ]
-    },
-    {
-        "title": "Unpaid Water Bill",
-        "description": [
-            "You didn't pay your water bill and its service has been disconnected.",
-            "You visit the utility district.",
-            "You pay your outstanding balance of $40 and a $25 reconnect fee.",
-            "You miss half a day of work."
-        ],
-        "effects": [
-            {
-                "item": "work",
-                "options": [0.5]
-            },
-            {
-                "item": "bankAccount",
-                "options": [65]
             }
         ]
     },
