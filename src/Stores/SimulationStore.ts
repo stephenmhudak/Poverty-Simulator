@@ -59,6 +59,14 @@ export const useSimulationStore = defineStore("Simulation", () => {
         }
     }
 
+    function restoreService(billTitle: string): string {
+        if (cutoffBills.value.length === 0) {
+            return "There are no services that have been cutoff."
+        }
+
+
+    }
+
     function startOfDayLog(): void {
         dailyLog.value.push("Available funds: $" + bankAccount.value);
         dailyLog.value.push("Daily pay rate: $" + payRate.value);
@@ -94,17 +102,20 @@ export const useSimulationStore = defineStore("Simulation", () => {
 
             if (bill) {
                 if (bill.dueBy <= simulationTurn.value) {
-                    return
-                } else {
-                    dailyLog.value.push(bill.title + " bill is overdue. Adding 10% to amount due");
-                    overdueBills.value.push(bill.title)
+                } else if ((bill.dueBy + 3) <= simulationTurn.value) {
+                    overdueBills.value.push(bill.title);
                     BILLS[index].amounts[0] = BILLS[index].amounts[0] * 1.1; //bill late fee is 10%
-                    return;
+                    dailyLog.value.push(bill.title + " bill is overdue. Adding 10% to amount due.");
+                } else {
+                    overdueBills.value = overdueBills.value.filter(item => item !== unpaidBill);
+                    cutoffBills.value.push(bill.title);
+                    dailyLog.value.push(bill.title + " has been cut off.");
                 }
-            } else {
-                return
             }
         })
+
+        overdueBills.value = [...new Set(overdueBills.value)];
+        cutoffBills.value = [...new Set(cutoffBills.value)];
     }
 
     function randomInt(min: number, max: number): number {
