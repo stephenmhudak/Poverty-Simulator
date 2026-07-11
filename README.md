@@ -7,3 +7,5 @@ This app uses the following packages:
 - Axios
 - TailwindCSS
 - @mdi/font
+
+Art by: 
