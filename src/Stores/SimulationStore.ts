@@ -4,7 +4,7 @@ import billsJson from "../Data/bills.json";
 import hazardsJson from "../Data/hazards.json";
 import lucksJson from "../Data/hazards.json";
 import interventionsJson from "../Data/hazards.json";
-import type { Bill, Hazard, Luck, Intervention, OverdueBill } from "../Types/Simulation";
+import type { Bill, Hazard, Luck, Intervention } from "../Types/Simulation";
 
 let BILLS = billsJson satisfies Bill[];
 let HAZARDS = hazardsJson satisfies Hazard[];
@@ -20,7 +20,8 @@ export const useSimulationStore = defineStore("Simulation", () => {
     const hasCar = ref<boolean>(true);
 
     const unpaidBills = ref<string[]>([]);
-    const overdueBills = ref<OverdueBill[]>([]);
+    const overdueBills = ref<string[]>([]);
+    const cutoffBills = ref<string[]>([]);
 
     const dailyLog = ref<string[]>([]);
 
@@ -64,7 +65,12 @@ export const useSimulationStore = defineStore("Simulation", () => {
         dailyLog.value.push("Available work points: " + workPoints.value);
         dailyLog.value.push(hasCar.value ? "Has a car" : "Does not have a car");
         dailyLog.value.push("Unpaid bills: " + unpaidBills.value.join(" ,"));
-        dailyLog.value.push("Overdue bills: " + overdueBills.value.map((bill) => bill.title).join(" ,"));
+        if (overdueBills.value.length !== 0) {
+            dailyLog.value.push("Overdue bills: " + overdueBills.value.join(" ,"));
+        }
+        if (cutoffBills.value.length !== 0) {
+            dailyLog.value.push("These services have been cut off: " + overdueBills.value.join(" ,"));
+        }
     }
 
     function setBillValues(): void {
@@ -82,18 +88,18 @@ export const useSimulationStore = defineStore("Simulation", () => {
             return
         }
 
-        unpaidBills.value.forEach(unpaidBill => {
-            let bill = BILLS.find((bill) => bill.title === unpaidBill)
+        unpaidBills.value.forEach((unpaidBill) => {
+            const bill = BILLS.find((bill) => bill.title === unpaidBill)
+            const index = BILLS.findIndex((bill) => bill.title === unpaidBill);
 
             if (bill) {
                 if (bill.dueBy <= simulationTurn.value) {
                     return
                 } else {
-                    overdueBills.value.push({
-                        title: bill.title,
-                        daysOverdue: simulationTurn.value - bill.dueBy,
-                        overdueAmount: bill.amounts[0] * 1.1
-                    })
+                    dailyLog.value.push(bill.title + " bill is overdue. Adding 10% to amount due");
+                    overdueBills.value.push(bill.title)
+                    BILLS[index].amounts[0] = BILLS[index].amounts[0] * 1.1; //bill late fee is 10%
+                    return;
                 }
             } else {
                 return
@@ -111,6 +117,8 @@ export const useSimulationStore = defineStore("Simulation", () => {
         workPoints,
         hasCar,
         unpaidBills,
+        overdueBills,
+        cutoffBills,
         dailyLog,
         startSimulation,
         startNextDay,
