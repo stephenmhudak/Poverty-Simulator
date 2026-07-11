@@ -1,0 +1,15 @@
+[
+    {
+        "title": "Found money",
+        "description": [
+            "You found some money on the ground.",
+            "You add $%addMoney% to your bank account."
+        ],
+        "effects": [
+            {
+                "item": "bankAccount",
+                "options": [0.10,0.25,1,5]
+            }
+        ]
+    }
+]
