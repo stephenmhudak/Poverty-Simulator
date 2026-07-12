@@ -64,7 +64,26 @@ export const useSimulationStore = defineStore("Simulation", () => {
             return "There are no services that have been cutoff."
         }
 
+        const serviceToRestore = cutoffBills.value.find(service => service === billTitle);
 
+        if (serviceToRestore === undefined) {
+            return billTitle + " has not been cut off.";
+        }
+
+        const billToRestore = BILLS.find((bill) => bill.title === serviceToRestore);
+
+        if (billToRestore === undefined) {
+            return billTitle + " can't be found.";
+        }
+
+        if (bankAccount.value < (billToRestore.amounts[0] + 25)) {
+            return "Not enough money to restore " + billTitle + ".";
+        }
+
+        cutoffBills.value.filter(service => service !== billTitle)
+        bankAccount.value = bankAccount.value - (billToRestore.amounts[0] + 25);
+        dailyLog.value.push(billTitle + " service has been restored");
+        return billTitle + " service has been restored";
     }
 
     function startOfDayLog(): void {
@@ -108,8 +127,8 @@ export const useSimulationStore = defineStore("Simulation", () => {
                     dailyLog.value.push(bill.title + " bill is overdue. Adding 10% to amount due.");
                 } else {
                     overdueBills.value = overdueBills.value.filter(item => item !== unpaidBill);
-                    cutoffBills.value.push(bill.title);
-                    dailyLog.value.push(bill.title + " has been cut off.");
+                    cutoffBills.value.push(unpaidBill);
+                    dailyLog.value.push(unpaidBill + " has been cut off.");
                 }
             }
         })
@@ -133,6 +152,7 @@ export const useSimulationStore = defineStore("Simulation", () => {
         dailyLog,
         startSimulation,
         startNextDay,
-        payBill
+        payBill,
+        restoreService
     };
 });
