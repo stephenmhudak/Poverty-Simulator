@@ -99,38 +99,6 @@ export const useSimulationStore = defineStore("Simulation", () => {
     }
 
     // These functions don't get exported
-    function checkHazards(): void {
-        if (randomInt(0, 255) < 191) {
-            return;
-        }
-
-        const hazard = HAZARDS[randomInt(0, HAZARDS.length)];
-
-        if (checkIfHazardApplies(hazard.requires) === false) {
-            return;
-        }
-
-		if (hazard.timesUsed === hazard.maxTimesUsed) {
-			return
-		}
-
-        applyHazard(hazard);
-
-		return
-    }
-
-    function checkLuck(): void {
-        if (randomInt(0, 255) < 128) {
-            return;
-        }
-
-        const luck = LUCKS[randomInt(0, LUCKS.length)];
-
-        applyLuck(luck);
-
-		return
-    }
-
     function startOfDayLog(): void {
         dailyLog.value.push("Available funds: $" + bankAccount.value);
         dailyLog.value.push("Daily pay rate: $" + payRate.value);
@@ -188,6 +156,26 @@ export const useSimulationStore = defineStore("Simulation", () => {
         cutoffBills.value = [...new Set(cutoffBills.value)];
     }
 
+    function checkHazards(): void {
+        if (randomInt(0, 255) < 191) {
+            return;
+        }
+
+        const hazard = HAZARDS[randomInt(0, HAZARDS.length)];
+
+        if (checkIfHazardApplies(hazard.requires) === false) {
+            return;
+        }
+
+		if (hazard.timesUsed === hazard.maxTimesUsed) {
+			return
+		}
+
+        applyHazard(hazard);
+
+		return
+    }
+
     function checkIfHazardApplies(hazardRequires: string[]): boolean {
         let requiredCount: number = 1;
 
@@ -240,6 +228,18 @@ export const useSimulationStore = defineStore("Simulation", () => {
         });
 
 		hazard.timesUsed = hazard.timesUsed++;
+
+		return
+    }
+
+    function checkLuck(): void {
+        if (randomInt(0, 255) < 128) {
+            return;
+        }
+
+        const luck = LUCKS[randomInt(0, LUCKS.length)];
+
+        applyLuck(luck);
 
 		return
     }
