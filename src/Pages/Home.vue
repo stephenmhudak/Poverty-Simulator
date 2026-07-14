@@ -9,15 +9,7 @@ import PsButton from '../Components/PsButton.vue';
             color="blue"
             :disabled="false"
             class="block my-1"
-            to="/new"
-                />
-
-        <PsButton
-            label="Resume a simulation"
-            color="blue"
-            :disabled="false"
-            class="block my-1"
-            to="/resume"
+            to="/start"
         />
 
         <PsButton
