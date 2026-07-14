@@ -27,10 +27,6 @@ const props = defineProps({
         type: Boolean,
         default: false
     },
-    type: {
-        type: String,
-        default: 'text'
-    },
     values: {
         type: Array as PropType<PsSelectOption[]>,
         default: () => []
