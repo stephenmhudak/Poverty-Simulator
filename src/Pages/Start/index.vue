@@ -44,7 +44,7 @@ function applyUserDetails() {
 </script>
 
 <template>
-    <div>
+    <div class="text-center">
         <div>
             <PsTextField name="firstName" label="First Name" class="" :disabled="false" v-model="firstName" />
         </div>
@@ -58,6 +58,6 @@ function applyUserDetails() {
             <PsSelect name="gender" label="Gender" :disabled="false" :values="genders" v-model="gender" />
         </div>
 
-        <PsButton label="Begin simulation" color="blue" class="block my-1" @click="applyUserDetails" />
+        <PsButton label="Begin simulation" color="blue" class="mt-4" @click="applyUserDetails" />
     </div>
 </template>

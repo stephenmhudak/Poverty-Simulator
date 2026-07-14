@@ -53,7 +53,8 @@ const buttonColor = computed(() => {
     <button
         v-else
         :disabled="props.disabled"
-        :class="'ps-btn ' + buttonColor">
+        :class="'ps-btn ' + buttonColor + ' ' + props.class"
+    >
         {{ props.label }}
     </button>
 </template>

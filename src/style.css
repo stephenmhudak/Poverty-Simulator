@@ -17,7 +17,7 @@
 }
 
 .ps-textfield-label {
-  @apply font-medium mr-4;
+  @apply font-medium block;
 }
 
 .ps-textfield {
@@ -25,12 +25,12 @@
     border-2 border-gray-500
     rounded-full
     py-2 px-4
-    mt-0 mb-1
+    mt-0 mb-2
     focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500;
 }
 
 .ps-select-label {
-  @apply font-medium mr-4;
+  @apply font-medium block;
 }
 
 .ps-select {
@@ -38,6 +38,6 @@
     border-2 border-gray-500
     rounded-full
     py-2 px-4
-    mt-0 mb-1
+    mt-0 mb-2
     focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500;
 }
