@@ -13,7 +13,7 @@ export interface Hazard {
     requires: string[];
 }
 
-export interface HazardEffect {
+interface HazardEffect {
     item: string;
     value: number[] | boolean[];
 }
