@@ -119,7 +119,7 @@ export const useSimulationStore = defineStore("Simulation", () => {
 		return
     }
 
-    function checkLuck(): string | void {
+    function checkLuck(): void {
         if (randomInt(0, 255) < 128) {
             return;
         }
