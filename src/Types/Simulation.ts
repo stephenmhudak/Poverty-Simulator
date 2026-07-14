@@ -26,7 +26,7 @@ export interface Luck {
 
 interface LuckEffect {
     item: string;
-    value: number[] | boolean[];
+    value: number[];
 }
 
 export interface Intervention {
