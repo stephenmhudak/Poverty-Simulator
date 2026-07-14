@@ -3,19 +3,22 @@
         "title": "Flat Tire",
         "description": [
             "You hit a pothole on the way to work and got a flat tire.",
-            "You're 2 hours late for your shift.",
-            "You spent $%lostMoney% on a new tire."
+            "You're late for your shift.",
+            "You spent $200 on a new tire."
         ],
         "effects": [
             {
-                "item": "work",
-                "options": [0.25]
+                "item": "workPoints",
+                "value": [1]
             },
             {
                 "item": "bankAccount",
-                "options": [150,200,250]
+                "value": [200]
             }
-        ]
+        ],
+        "timesUsed": 0,
+        "maxTimesUsed": 3,
+        "requires": ["hasCar", "hasJob"]
     },
     {
         "title": "Car Breakdown",
@@ -25,44 +28,53 @@
         ],
         "effects": [
             {
-                "item": "work",
-                "options": [0.25]
+                "item": "workPoints",
+                "value": [1]
             },
             {
                 "item": "hasCar",
-                "options": [false]
+                "value": [false]
             }
-        ]
+        ],
+        "timesUsed": 0,
+        "maxTimesUsed": 1,
+        "requires": ["hasCar", "hasJob"]
     },
     {
         "title": "Sick Day",
         "description": [
-            "You got the flu and missed %daysMissed% days of work.",
-            "You spent $%lostMoney% going to the doctor for a doctor's note."
+            "You got the flu and missed %work% days of work.",
+            "You spent %bankAccount% going to the doctor for a doctor's note."
         ],
         "effects": [
             {
-                "item": "work",
-                "options": [1,2,3]
+                "item": "workPoints",
+                "value": [1,2]
             },
             {
                 "item": "bankAccount",
-                "options": [40,65]
+                "value": [40,65]
             }
-        ]
+        ],
+        "timesUsed": 0,
+        "maxTimesUsed": 1,
+        "requires": ["hasJob"]
     },
     {
         "title": "Power Outage",
         "description": [
             "There was a storm and you lost power, causing all of your food to go bad.",
-            "You spent $%lostMoney% restocking your refridgerator."
+            "You spent $%bankAccount% restocking your refridgerator."
         ],
         "effects": [
             {
                 "item": "bankAccount",
-                "options": [100,200]
+                "value": [100,200]
             }
-        ]
+        ],
+        "timesUsed": 0,
+        "maxTimesUsed": 1,
+        "requires": ["hasHome"]
     },
     {
         "title": "Heavy Traffic",
@@ -72,10 +84,13 @@
         ],
         "effects": [
             {
-                "item": "work",
-                "options": [0.25]
+                "item": "workPoints",
+                "value": [0.25]
             }
-        ]
+        ],
+        "timesUsed": 0,
+        "maxTimesUsed": 1,
+        "requires": ["hasCar", "hasJob"]
     },
     {
         "title": "Wage Decrease",
@@ -86,8 +101,11 @@
         "effects": [
             {
                 "item": "payRate",
-                "options": [0.25, 10, 15]
+                "value": [0.25, 10, 15]
             }
-        ]
+        ],
+        "timesUsed": 0,
+        "maxTimesUsed": 1,
+        "requires": ["hasJob"]
     }
 ]
