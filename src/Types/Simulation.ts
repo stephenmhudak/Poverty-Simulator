@@ -1,7 +1,6 @@
 export interface Bill {
     title: string;
     amounts: number[];
-    reconnectFee?: number;
     dueBy: number;
 }
 
@@ -9,13 +8,15 @@ export interface Hazard {
     title: string;
     description: string[];
     effects: HazardEffect[];
+    timesUsed: number;
+    maxTimesUsed: number;
+    requires: string[];
 }
 
-interface HazardEffect {
+export interface HazardEffect {
     item: string;
-    options: number[] | boolean[];
+    value: number[] | boolean[];
 }
-
 
 export interface Luck {
     title: string;
@@ -25,9 +26,8 @@ export interface Luck {
 
 interface LuckEffect {
     item: string;
-    options: number[] | boolean[];
+    value: number[] | boolean[];
 }
-
 
 export interface Intervention {
     title: string;
