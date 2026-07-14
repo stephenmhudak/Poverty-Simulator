@@ -9,7 +9,7 @@ import type {
     Hazard,
     Luck,
     Intervention,
-} from "../Types/Simulation";
+} from "../Types/SimulationTypes";
 
 let BILLS = billsJson satisfies Bill[];
 let HAZARDS = hazardsJson satisfies Hazard[];
