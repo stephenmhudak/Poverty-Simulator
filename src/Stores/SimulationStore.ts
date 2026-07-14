@@ -2,12 +2,11 @@ import { ref } from "vue";
 import { defineStore } from "pinia";
 import billsJson from "../Data/bills.json";
 import hazardsJson from "../Data/hazards.json";
-import lucksJson from "../Data/hazards.json";
-import interventionsJson from "../Data/hazards.json";
+import lucksJson from "../Data/lucks.json";
+import interventionsJson from "../Data/interventions.json";
 import type {
     Bill,
     Hazard,
-    HazardEffect,
     Luck,
     Intervention,
 } from "../Types/Simulation";
@@ -222,10 +221,10 @@ export const useSimulationStore = defineStore("Simulation", () => {
             if (typeof effect.value[0] === "number") {
                 const numberValues = effect.value as number[];
                 let effectValue = numberValues[randomInt(0, numberValues.length)];
-                const current = refs[effect.item];
+                const currentRef = refs[effect.item];
 
-                if (typeof current === "number") {
-                    refs[effect.item] = current - effectValue;
+                if (typeof currentRef === "number") {
+                    refs[effect.item] = currentRef - effectValue;
                 }
 
                 descriptions.forEach((description) => {
@@ -246,7 +245,7 @@ export const useSimulationStore = defineStore("Simulation", () => {
     }
 
     function applyLuck(luck: Luck): void {
-        const refs: Record<string, number | boolean> = {
+        const refs: Record<string, number> = {
             bankAccount: bankAccount.value,
             payRate: payRate.value,
         };
@@ -254,25 +253,18 @@ export const useSimulationStore = defineStore("Simulation", () => {
         let descriptions: string[] = luck.description;
 
         luck.effects.forEach((effect) => {
-            if (typeof effect.value[0] === "number") {
-                const numberValues = effect.value as number[];
-                let effectValue = numberValues[randomInt(0, numberValues.length)];
-                const current = refs[effect.item];
+			let effectValue = effect.value[randomInt(0, effect.value.length)];
 
-                if (typeof current === "number") {
-                    refs[effect.item] = current - effectValue;
-                }
+			refs[effect.item] = refs[effect.item] + effectValue;
 
-                descriptions.forEach((description) => {
-                    const valueAsString = effectValue as unknown as string;
-					const toReplace = "%" + effect.item + "%";
-                    let modifiedDesciption = description.replace(toReplace, valueAsString);
 
-                    dailyLog.value.push(modifiedDesciption);
-                });
-            } else {
-                refs[effect.item] = effect.value[0];
-            }
+			descriptions.forEach((description) => {
+				const valueAsString = effectValue as unknown as string;
+				const toReplace = "%" + effect.item + "%";
+				let modifiedDesciption = description.replace(toReplace, valueAsString);
+
+				dailyLog.value.push(modifiedDesciption);
+			});
         });
 
 		return
