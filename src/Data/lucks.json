@@ -1,0 +1,28 @@
+[
+    {
+        "title": "Found money",
+        "description": [
+            "You found some money on the ground.",
+            "You add $%addMoney% to your bank account."
+        ],
+        "effects": [
+            {
+                "item": "bankAccount",
+                "value": [0.10,0.25,1,5,10,20]
+            }
+        ]
+    },
+    {
+        "title": "Pay rate increase",
+        "description": [
+            "You got a pay increase.",
+            "Your new pay rate increased by $%payRate% per day."
+        ],
+        "effects": [
+            {
+                "item": "payRate",
+                "value": [0.25,0.5]
+            }
+        ]
+    }
+]

@@ -1,0 +1,111 @@
+[
+    {
+        "title": "Flat Tire",
+        "description": [
+            "You hit a pothole on the way to work and got a flat tire.",
+            "You're late for your shift.",
+            "You spent $200 on a new tire."
+        ],
+        "effects": [
+            {
+                "item": "workPoints",
+                "value": [1]
+            },
+            {
+                "item": "bankAccount",
+                "value": [200]
+            }
+        ],
+        "timesUsed": 0,
+        "maxTimesUsed": 3,
+        "requires": ["hasCar", "hasJob"]
+    },
+    {
+        "title": "Car Breakdown",
+        "description": [
+            "Your car has broken down and you have abandonned it.",
+            "You're 2 hours late for your shift and no longer have a car."
+        ],
+        "effects": [
+            {
+                "item": "workPoints",
+                "value": [1]
+            },
+            {
+                "item": "hasCar",
+                "value": [false]
+            }
+        ],
+        "timesUsed": 0,
+        "maxTimesUsed": 1,
+        "requires": ["hasCar", "hasJob"]
+    },
+    {
+        "title": "Sick Day",
+        "description": [
+            "You got the flu and missed %work% days of work.",
+            "You spent %bankAccount% going to the doctor for a doctor's note."
+        ],
+        "effects": [
+            {
+                "item": "workPoints",
+                "value": [1,2]
+            },
+            {
+                "item": "bankAccount",
+                "value": [40,65]
+            }
+        ],
+        "timesUsed": 0,
+        "maxTimesUsed": 1,
+        "requires": ["hasJob"]
+    },
+    {
+        "title": "Power Outage",
+        "description": [
+            "There was a storm and you lost power, causing all of your food to go bad.",
+            "You spent $%bankAccount% restocking your refridgerator."
+        ],
+        "effects": [
+            {
+                "item": "bankAccount",
+                "value": [100,200]
+            }
+        ],
+        "timesUsed": 0,
+        "maxTimesUsed": 1,
+        "requires": ["hasHome"]
+    },
+    {
+        "title": "Heavy Traffic",
+        "description": [
+            "There was heavy traffic.",
+            "You're 2 hours late for your shift."
+        ],
+        "effects": [
+            {
+                "item": "workPoints",
+                "value": [0.25]
+            }
+        ],
+        "timesUsed": 0,
+        "maxTimesUsed": 1,
+        "requires": ["hasCar", "hasJob"]
+    },
+    {
+        "title": "Wage Decrease",
+        "description": [
+            "You employer decrease everyone's pay rate to prevent bankruptcy.",
+            "Your payrate was drecreased by $%rateDecrease% per day."
+        ],
+        "effects": [
+            {
+                "item": "payRate",
+                "value": [0.25, 10, 15]
+            }
+        ],
+        "timesUsed": 0,
+        "maxTimesUsed": 1,
+        "requires": ["hasJob"]
+    }
+]
