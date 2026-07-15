@@ -45,11 +45,15 @@ export const useSimulationStore = defineStore("Simulation", () => {
     }
 
     function startNextDay(): string {
+        simulationTurn.value = simulationTurn.value + 1;
+
         checkUnpaidBills();
         startOfDayLog();
 
         checkHazards();
 		checkLuck();
+
+        bankAccount.value = bankAccount.value + payRate.value
 
         return "Day: " + simulationTurn.value;
     }
@@ -104,13 +108,13 @@ export const useSimulationStore = defineStore("Simulation", () => {
         dailyLog.value.push("Daily pay rate: $" + payRate.value);
         dailyLog.value.push("Available work points: " + workPoints.value);
         dailyLog.value.push(hasCar.value ? "Has a car" : "Does not have a car");
-        dailyLog.value.push("Unpaid bills: " + unpaidBills.value.join(" ,"));
+        dailyLog.value.push("Unpaid bills: " + unpaidBills.value.join(", "));
         if (overdueBills.value.length !== 0) {
-            dailyLog.value.push("Overdue bills: " + overdueBills.value.join(" ,"));
+            dailyLog.value.push("Overdue bills: " + overdueBills.value.join(", "));
         }
         if (cutoffBills.value.length !== 0) {
             dailyLog.value.push(
-                "These services have been cut off: " + overdueBills.value.join(" ,")
+                "These services have been cut off: " + overdueBills.value.join(", ")
             );
         }
     }
@@ -119,7 +123,7 @@ export const useSimulationStore = defineStore("Simulation", () => {
         BILLS.forEach((bill, index) => {
             if (bill.amounts.length > 1) {
                 BILLS[index].amounts = [
-                    bill.amounts[randomInt(0, bill.amounts.length)],
+                    bill.amounts[randomInt(0, bill.amounts.length - 1)],
                 ];
             }
         });
@@ -161,7 +165,7 @@ export const useSimulationStore = defineStore("Simulation", () => {
             return;
         }
 
-        const hazard = HAZARDS[randomInt(0, HAZARDS.length)];
+        const hazard = HAZARDS[randomInt(0, HAZARDS.length - 1)];
 
         if (checkIfHazardApplies(hazard.requires) === false) {
             return;
@@ -208,7 +212,7 @@ export const useSimulationStore = defineStore("Simulation", () => {
         hazard.effects.forEach((effect) => {
             if (typeof effect.value[0] === "number") {
                 const numberValues = effect.value as number[];
-                let effectValue = numberValues[randomInt(0, numberValues.length)];
+                let effectValue = numberValues[randomInt(0, numberValues.length - 1)];
                 const currentRef = refs[effect.item];
 
                 if (typeof currentRef === "number") {
@@ -237,7 +241,7 @@ export const useSimulationStore = defineStore("Simulation", () => {
             return;
         }
 
-        const luck = LUCKS[randomInt(0, LUCKS.length)];
+        const luck = LUCKS[randomInt(0, LUCKS.length - 1)];
 
         applyLuck(luck);
 
@@ -253,7 +257,7 @@ export const useSimulationStore = defineStore("Simulation", () => {
         let descriptions: string[] = luck.description;
 
         luck.effects.forEach((effect) => {
-			let effectValue = effect.value[randomInt(0, effect.value.length)];
+			let effectValue = effect.value[randomInt(0, effect.value.length - 1)];
 
 			refs[effect.item] = refs[effect.item] + effectValue;
 
