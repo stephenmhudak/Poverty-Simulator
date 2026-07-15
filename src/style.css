@@ -4,6 +4,11 @@
   @apply font-bold py-4 px-8;
 }
 
+.ps-btn-sm {
+    @apply font-bold py-2 px-4;
+    font-size: 10px;
+  }
+
 .ps-btn-disabled {
   @apply bg-gray-400 text-gray-700 pointer-events-none;
 }
@@ -12,8 +17,7 @@
   @apply
     bg-blue-500 hover:bg-blue-700
     text-white
-    hover:border-l-4 hover:border-l-white
-    box-content;
+    border-y-4 border-blue-500 hover:border-t-blue-700 hover:border-b-orange-500;
 }
 
 .ps-textfield-label {
