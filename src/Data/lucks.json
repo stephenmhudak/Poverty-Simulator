@@ -3,7 +3,7 @@
         "title": "Found money",
         "description": [
             "You found some money on the ground.",
-            "You add $%addMoney% to your bank account."
+            "You add $%bankAccount% to your bank account."
         ],
         "effects": [
             {
