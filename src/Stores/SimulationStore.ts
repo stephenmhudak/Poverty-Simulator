@@ -1,4 +1,4 @@
-import { ref } from "vue";
+import { ref, type Ref } from "vue";
 import { defineStore } from "pinia";
 import billsJson from "../Data/bills.json";
 import hazardsJson from "../Data/hazards.json";
@@ -9,19 +9,21 @@ import type {
     Hazard,
     Luck,
     Intervention,
+    DailyLog
 } from "../Types/SimulationTypes";
 
-let BILLS = billsJson satisfies Bill[];
-let HAZARDS = hazardsJson satisfies Hazard[];
-let LUCKS = lucksJson satisfies Luck[];
 // let INTERVENTIONS = interventionsJson satisfies Intervention[];
 
 export const useSimulationStore = defineStore("Simulation", () => {
+    let BILLS = billsJson satisfies Bill[];
+    let HAZARDS = hazardsJson satisfies Hazard[];
+    let LUCKS = lucksJson satisfies Luck[];
+
     const simulationTurn = ref<number>(0);
     const bankAccount = ref<number>(800);
 
     const workPoints = ref<number>(3);
-    const payRate = ref<number>(60);
+    const payRate = ref<number>(37.68);
     const hasJob = ref<boolean>(true);
     const hasCar = ref<boolean>(true);
     const hasHome = ref<boolean>(true);
@@ -30,7 +32,7 @@ export const useSimulationStore = defineStore("Simulation", () => {
     const overdueBills = ref<string[]>([]);
     const cutoffBills = ref<string[]>([]);
 
-    const dailyLog = ref<string[]>([]);
+    const dailyLog = ref<DailyLog[]>([]);
 
     function startSimulation(): string {
         BILLS.forEach((bill) => {
@@ -48,12 +50,13 @@ export const useSimulationStore = defineStore("Simulation", () => {
         simulationTurn.value = simulationTurn.value + 1;
 
         checkUnpaidBills();
-        startOfDayLog();
 
         checkHazards();
 		checkLuck();
 
-        bankAccount.value = bankAccount.value + payRate.value
+        startOfDayLog();
+
+        bankAccount.value = Math.ceil(bankAccount.value + payRate.value);
 
         return "Day: " + simulationTurn.value;
     }
@@ -65,7 +68,8 @@ export const useSimulationStore = defineStore("Simulation", () => {
             return "Can't pay an undefined bill.";
         } else if (bankAccount.value > bill.amounts[0]) {
             bankAccount.value = bankAccount.value - bill.amounts[0];
-            //remove bill from bills
+            unpaidBills.value = unpaidBills.value.filter(bill => bill !== billTitle);
+            cutoffBills.value = cutoffBills.value.filter(bill => bill !== billTitle);
 
             return bill.title + " bill has been paid.";
         } else {
@@ -98,23 +102,53 @@ export const useSimulationStore = defineStore("Simulation", () => {
 
         cutoffBills.value.filter((service) => service !== billTitle);
         bankAccount.value = bankAccount.value - (billToRestore.amounts[0] + 25);
-        dailyLog.value.push(billTitle + " service has been restored");
+        dailyLog.value.push(
+            {
+                day: simulationTurn.value,
+                description: billTitle + " service has been restored"
+            }
+        );
         return billTitle + " service has been restored";
     }
 
     // These functions don't get exported
     function startOfDayLog(): void {
-        dailyLog.value.push("Available funds: $" + bankAccount.value);
-        dailyLog.value.push("Daily pay rate: $" + payRate.value);
-        dailyLog.value.push("Available work points: " + workPoints.value);
-        dailyLog.value.push(hasCar.value ? "Has a car" : "Does not have a car");
-        dailyLog.value.push("Unpaid bills: " + unpaidBills.value.join(", "));
+        dailyLog.value.push(
+            {
+                day: simulationTurn.value,
+                description: "Available funds: $" + bankAccount.value
+            }
+        );
+        dailyLog.value.push(
+            {
+                day: simulationTurn.value,
+                description: "Daily pay rate: $" + payRate.value
+            }
+        );
+        dailyLog.value.push(
+            {
+                day: simulationTurn.value,
+                description: "Available work points: " + workPoints.value
+            }
+        );
+        dailyLog.value.push(
+            {
+                day: simulationTurn.value,
+                description: hasCar.value ? "Has a car" : "Does not have a car"
+            }
+        );
+        dailyLog.value.push(
+            {
+                day: simulationTurn.value,
+                description: "Unpaid bills: " + unpaidBills.value.join(", ")
+            }
+        );
         if (overdueBills.value.length !== 0) {
-            dailyLog.value.push("Overdue bills: " + overdueBills.value.join(", "));
-        }
-        if (cutoffBills.value.length !== 0) {
             dailyLog.value.push(
-                "These services have been cut off: " + overdueBills.value.join(", ")
+                {
+                    day: simulationTurn.value,
+                    description: "Overdue bills: " + overdueBills.value.join(", ")
+                }
             );
         }
     }
@@ -139,19 +173,28 @@ export const useSimulationStore = defineStore("Simulation", () => {
             const index = BILLS.findIndex((bill) => bill.title === unpaidBill);
 
             if (bill) {
-                if (bill.dueBy <= simulationTurn.value) {
-                } else if (bill.dueBy + 3 <= simulationTurn.value) {
+                if (simulationTurn.value < bill.dueBy) {
+
+                } else if (simulationTurn.value < bill.dueBy + 3) {
                     overdueBills.value.push(bill.title);
-                    BILLS[index].amounts[0] = BILLS[index].amounts[0] * 1.1; //bill late fee is 10%
+                    BILLS[index].amounts[0] = Number((BILLS[index].amounts[0] * 1.1).toFixed(2)); //bill late fee is 10%
                     dailyLog.value.push(
-                        bill.title + " bill is overdue. Adding 10% to amount due."
+                        {
+                            day: simulationTurn.value,
+                            description: bill.title + " bill is overdue. Adding 10% to amount due."
+                        }
                     );
                 } else {
                     overdueBills.value = overdueBills.value.filter(
                         (item) => item !== unpaidBill
                     );
                     cutoffBills.value.push(unpaidBill);
-                    dailyLog.value.push(unpaidBill + " has been cut off.");
+                    dailyLog.value.push(
+                        {
+                            day: simulationTurn.value,
+                            description: unpaidBill + " has been cut off."
+                        }
+                    );
                 }
             }
         });
@@ -198,13 +241,13 @@ export const useSimulationStore = defineStore("Simulation", () => {
     }
 
     function applyHazard(hazard: Hazard): void {
-        const refs: Record<string, number | boolean> = {
-            bankAccount: bankAccount.value,
-            workPoints: workPoints.value,
-            payRate: payRate.value,
-            hasCar: hasCar.value,
-            hasJob: hasJob.value,
-            hasHome: hasHome.value,
+        const refs: Record<string, Ref<number> | Ref<boolean>> = {
+            bankAccount,
+            workPoints,
+            payRate,
+            hasCar,
+            hasJob,
+            hasHome,
         };
 
         let descriptions: string[] = hazard.description;
@@ -215,8 +258,8 @@ export const useSimulationStore = defineStore("Simulation", () => {
                 let effectValue = numberValues[randomInt(0, numberValues.length - 1)];
                 const currentRef = refs[effect.item];
 
-                if (typeof currentRef === "number") {
-                    refs[effect.item] = currentRef - effectValue;
+                if (typeof currentRef.value === "number") {
+                    currentRef.value = currentRef.value - effectValue;
                 }
 
                 descriptions.forEach((description) => {
@@ -224,10 +267,19 @@ export const useSimulationStore = defineStore("Simulation", () => {
 					const toReplace = "%" + effect.item + "%";
                     let modifiedDesciption = description.replace(toReplace, valueAsString);
 
-                    dailyLog.value.push(modifiedDesciption);
+                    dailyLog.value.push(
+                        {
+                            day: simulationTurn.value,
+                            description: modifiedDesciption
+                        }
+                    );
                 });
             } else {
-                refs[effect.item] = effect.value[0];
+                const currentRef = refs[effect.item];
+
+                if (typeof currentRef.value === "boolean") {
+                    currentRef.value = effect.value[0] as boolean;
+                }
             }
         });
 
@@ -249,9 +301,9 @@ export const useSimulationStore = defineStore("Simulation", () => {
     }
 
     function applyLuck(luck: Luck): void {
-        const refs: Record<string, number> = {
-            bankAccount: bankAccount.value,
-            payRate: payRate.value,
+        const refs: Record<string, Ref<number>> = {
+            bankAccount,
+            payRate,
         };
 
         let descriptions: string[] = luck.description;
@@ -259,15 +311,19 @@ export const useSimulationStore = defineStore("Simulation", () => {
         luck.effects.forEach((effect) => {
 			let effectValue = effect.value[randomInt(0, effect.value.length - 1)];
 
-			refs[effect.item] = refs[effect.item] + effectValue;
-
+			refs[effect.item].value = refs[effect.item].value + effectValue;
 
 			descriptions.forEach((description) => {
 				const valueAsString = effectValue as unknown as string;
 				const toReplace = "%" + effect.item + "%";
 				let modifiedDesciption = description.replace(toReplace, valueAsString);
 
-				dailyLog.value.push(modifiedDesciption);
+				dailyLog.value.push(
+                    {
+                        day: simulationTurn.value,
+                        description: modifiedDesciption
+                    }
+                );
 			});
         });
 
@@ -279,6 +335,7 @@ export const useSimulationStore = defineStore("Simulation", () => {
     }
 
     return {
+        BILLS,
         simulationTurn,
         bankAccount,
         workPoints,

@@ -96,7 +96,7 @@
         "title": "Wage Decrease",
         "description": [
             "You employer decrease everyone's pay rate to prevent bankruptcy.",
-            "Your payrate was drecreased by $%rateDecrease% per day."
+            "Your payrate was drecreased by $%payRate% per day."
         ],
         "effects": [
             {

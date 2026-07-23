@@ -45,6 +45,7 @@ const buttonColor = computed(() => {
         v-if="props.to"
         :disabled="props.disabled"
         :class="'ps-btn ' + buttonColor + ' ' + props.class"
+        v-bind="$attrs"
         @click="router.push(props.to)"
     >
         {{ props.label }}
@@ -54,6 +55,7 @@ const buttonColor = computed(() => {
         v-else
         :disabled="props.disabled"
         :class="'ps-btn ' + buttonColor + ' ' + props.class"
+        v-bind="$attrs"
     >
         {{ props.label }}
     </button>

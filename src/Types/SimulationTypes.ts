@@ -39,3 +39,8 @@ interface InterventionEffect {
     item: string;
     options: number[] | boolean[];
 }
+
+export interface DailyLog {
+    day: number;
+    description: string | number;
+}
